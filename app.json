@@ -21,10 +21,19 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.mohammed_mydeen.myapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+
+
+    "extra": {
+      "eas": {
+        "projectId": "646c27b2-cdab-4294-b8dc-24925b993f19"
+      }
+    },
+    "scheme":"mydeen"
   }
 }
