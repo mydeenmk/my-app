@@ -278,7 +278,7 @@ const Login = () => {
           <Text style={{ color: 'white' }} >Sign in with Apple</Text>
         </FontAwsome.Button>
       </View>
-      <View style={{ marginTop: 20, }} onPress={HomeScreen}>
+      <View style={{ marginTop: 20, }}>
         <FontAwsome.Button name='google' backgroundColor='#47624f' color='white' borderRadius={25}  onPress={promptAcync}>
           <Text style={{ color: 'white', }}>Sign in with Google</Text>
         </FontAwsome.Button>
