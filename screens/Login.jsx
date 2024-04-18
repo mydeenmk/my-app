@@ -130,7 +130,49 @@
 
 // export default Login;
 
-import React, { useState } from 'react';
+
+
+// WebBrowser.maybeCompleteAuthSession()
+//   const[request, response, promptAcync]= Google.useAuthRequest({
+//     androidClientId:"101582001873-3cdlfcp15b2nc8j7ggn57qgahvo5f4b7.apps.googleusercontent.com"
+//   });
+
+//     React.useEffect(()=>{
+//       handleSigninWithGoogle();
+//     }, [response])
+
+//   async function handleSigninWithGoogle(){
+//     const user = await AsyncStorage.getItem("@user");
+    
+//         if (!user){
+//           if (response?.type === "success") {
+//             await getUserinfo(response.authentication.accessToken);
+//           }
+//         }
+//     else{
+//       setUserInfo(JSON.parse(user));
+//     }
+// }
+
+//   const getUserinfo = async(token)=> {
+//     if (!token) return;
+//     try{
+//       const response = await fetch(
+//         "https://www.googleapis.com/userinfo/v2/me",
+//         {
+//             headers:{Authorization:`bearer ${token}`},
+//         }
+//       );
+//           const user= await response.json();
+//           await AsyncStorage.setItem('@user',JSON.stringify(user));
+//           setUserInfo(user);
+//           navigateToHome();
+//     }     catch(error){
+        
+//     };
+//   };
+
+import React, { useState, } from 'react';
 import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -140,55 +182,78 @@ import FontAwsome from '@expo/vector-icons/FontAwesome';
 import * as WebBrowser from "expo-web-browser";
 import* as Google from "expo-auth-session/providers/google";
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useEffect } from 'react';
 
 
-WebBrowser.maybeCompleteAuthSession()
 const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otp, setOtp] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [userInfo, setUserInfo]=React.useState(null);
-  
-  const[request, response, promptAcync]= Google.useAuthRequest({
-    androidClientId:"101582001873-3cdlfcp15b2nc8j7ggn57qgahvo5f4b7.apps.googleusercontent.com"
+  const[userinfo,setUserInfo]= useState(null);
+  const navigation = useNavigation();
+
+  // const handleSignInWithGoogle = async () => {
+  //   try {
+  //     const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+  //       clientId: "101582001873-3cdlfcp15b2nc8j7ggn57qgahvo5f4b7.apps.googleusercontent.com",
+  //     });
+
+  //     await promptAsync();
+
+  //     if (response?.type === 'success') {
+  //       const { id_token } = response.params;
+  //       await AsyncStorage.setItem('@user', id_token);
+  //       navigation.navigate('Home');
+  //     } else {
+  //       // Handle sign-in failure
+  //     }
+  //   } catch (error) {
+  //     console.error('Error signing in with Google:', error);
+  //   }
+  // };
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      getUserInfo(response.authentication.accessToken);
+    }
+  }, [response]);
+
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    clientId: "101582001873-3cdlfcp15b2nc8j7ggn57qgahvo5f4b7.apps.googleusercontent.com",
   });
 
-    React.useEffect(()=>{
-      handleSigninWithGoogle();
-    }, [response])
-
-  async function handleSigninWithGoogle(){
-    const user = await AsyncStorage.getItem("@user");
-    
-        if (!user){
-          if (response?.type === 'success') {
-            await getUserinfo(response.authentication.accessToken);
-          }
-        }
-    else{
-      setUserInfo(JSON.parse(user));
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const { id_token } = response.params;
+      AsyncStorage.setItem('@user', id_token);
+      navigation.navigate('Home');
     }
-}
+  }, [response]);
 
-  const getUserinfo = async(token)=> {
-    if (!token) return;
-    try{
-      const response = await fetch(
-        "https://www.googleapis.com/userinfo/v2/me",
-        {
-            headers:{Authorization:`bearer ${token}`},
-        }
-      );
-          const user= await response.json();
-          await AsyncStorage.setItem('@user',JSON.stringify(user));
-          setUserInfo(user);
-    }     catch(error){
-
-    };
+  const getUserInfo = async (token) => {
+    try {
+      const userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const user = await userInfoResponse.json();
+      AsyncStorage.setItem('@user', JSON.stringify(user));
+      setUserInfo(user);
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
   };
 
-  const navigation = useNavigation(); // Initialize navigation hook
+
+  const handleSignOut = async () => {
+    try {
+      await AsyncStorage.removeItem('@user');
+      setUserInfo(null);
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   const handleSendOTP = async () => {
     try {
@@ -278,11 +343,11 @@ const Login = () => {
           <Text style={{ color: 'white' }} >Sign in with Apple</Text>
         </FontAwsome.Button>
       </View>
-      <View style={{ marginTop: 20, }}>
-        <FontAwsome.Button name='google' backgroundColor='#47624f' color='white' borderRadius={25}  onPress={promptAcync}>
-          <Text style={{ color: 'white', }}>Sign in with Google</Text>
+      <View style={{ marginTop: 20 }}>
+        <FontAwsome.Button name='google' backgroundColor='#47624f' color='white' borderRadius={25} onPress={() => promptAsync()} >
+          <Text style={{ color: 'white' }}>Sign in with Google</Text>
         </FontAwsome.Button>
-        <Button title='sign out' onPress={()=> AsyncStorage.removeItem('@user')}/>
+        {userinfo && <Button title='Sign out' onPress={handleSignOut} />}
       </View>
     </View>
   );

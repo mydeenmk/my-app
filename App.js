@@ -5,15 +5,15 @@ import Login from './screens/Login';
 import LandingPage from './screens/landing';
 import HomeScreen from './screens/homescreen';
 import Cart from './screens/cart';
-import { ViewProps } from 'react-native';
+
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import { AppRegistry } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { enableScreens } from 'react-native-screens';
-import ViewPropTypes from 'deprecated-react-native-prop-types';
+
 const Stack = createNativeStackNavigator();
 
-enableScreens();
+
 const App = () => {
   return (
     <NavigationContainer >

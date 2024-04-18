@@ -8,7 +8,7 @@ import Evilicons from '@expo/vector-icons/EvilIcons';
 import FontAwsome from '@expo/vector-icons/FontAwesome';
 import Login from './Login';
 import { SliderBox } from 'react-native-image-slider-box';
-import { height } from 'deprecated-react-native-prop-types/DeprecatedImagePropType';
+
 import { FlatList } from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
