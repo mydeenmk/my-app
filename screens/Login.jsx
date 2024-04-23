@@ -255,9 +255,11 @@ const Login = () => {
     }
   };
 
+  const SERVER_IP = '192.168.1.34';
+
   const handleSendOTP = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/api/send-otp', { phoneNumber });
+      const response = await axios.post(`http://${SERVER_IP}:3000/api/send-otp`, { phoneNumber });
       Alert.alert('OTP Sent', response.data.message);
     } catch (error) {
       Alert.alert('Error', 'Failed to send OTP');
@@ -266,7 +268,7 @@ const Login = () => {
 
   const handleVerifyOTP = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/api/verify-otp', { otp });
+      const response = await axios.post(`http://${SERVER_IP}:3000/api/verify-otp`, { otp });
       Alert.alert('OTP Verified', response.data.message);
       if (response.data.success) {
         // Navigate to HomeScreen upon successful verification
