@@ -257,27 +257,27 @@ const Login = () => {
 
   const SERVER_IP = '192.168.1.34';
 
-  const handleSendOTP = async () => {
-    try {
-      const response = await axios.post(`http://${SERVER_IP}:3000/api/send-otp`, { phoneNumber });
-      Alert.alert('OTP Sent', response.data.message);
-    } catch (error) {
-      Alert.alert('Error', 'Failed to send OTP');
-    }
-  };
+const handleSendOTP = async (phoneNumber) => {
+  try {
+    const response = await axios.post(`http://${SERVER_IP}:3000/api/send-otp`, { phoneNumber });
+    Alert.alert('OTP Sent', response.data.message);
+  } catch (error) {
+    Alert.alert('Error', 'Failed to send OTP');
+  }
+};
 
-  const handleVerifyOTP = async () => {
-    try {
-      const response = await axios.post(`http://${SERVER_IP}:3000/api/verify-otp`, { otp });
-      Alert.alert('OTP Verified', response.data.message);
-      if (response.data.success) {
-        // Navigate to HomeScreen upon successful verification
-        HomeScreen();
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Invalid OTP');
+const handleVerifyOTP = async (otp) => {
+  try {
+    const response = await axios.post(`http://${SERVER_IP}:3000/api/verify-otp`, { otp });
+    Alert.alert('OTP Verified', response.data.message);
+    if (response.data.success) {
+      // Navigate to HomeScreen upon successful verification
+      HomeScreen();
     }
-  };
+  } catch (error) {
+    Alert.alert('Error', 'Invalid OTP');
+  }
+};
 
   const LandingPage = () => {
     navigation.navigate('Landingpage');
