@@ -255,29 +255,32 @@ const Login = () => {
     }
   };
 
-  const SERVER_IP = '192.168.1.34';
+  const SERVER_IP = '172.20.10.7';
 
-const handleSendOTP = async (phoneNumber) => {
-  try {
-    const response = await axios.post(`http://${SERVER_IP}:3000/api/send-otp`, { phoneNumber });
-    Alert.alert('OTP Sent', response.data.message);
-  } catch (error) {
-    Alert.alert('Error', 'Failed to send OTP');
-  }
-};
-
-const handleVerifyOTP = async (otp) => {
-  try {
-    const response = await axios.post(`http://${SERVER_IP}:3000/api/verify-otp`, { otp });
-    Alert.alert('OTP Verified', response.data.message);
-    if (response.data.success) {
-      // Navigate to HomeScreen upon successful verification
-      HomeScreen();
+  const handleSendOTP = async () => {
+    try {
+      const response = await axios.post(`http://${SERVER_IP}:3000/api/send-otp`, { phoneNumber });
+      Alert.alert('OTP Sent', response.data.message);
+    } catch (error) {
+      Alert.alert('Error', 'Failed to send OTP');
     }
-  } catch (error) {
-    Alert.alert('Error', 'Invalid OTP');
-  }
-};
+  };
+
+  const handleVerifyOTP = async () => {
+     // Access navigation object
+    try {
+      const response = await axios.post(`http://${SERVER_IP}:3000/api/verify-otp`, { otp, phoneNumber });
+      Alert.alert('OTP Verified', response.data.message);
+      if (response.data.success) {
+        setPhoneNumber('');
+        setOtp('');
+        // Navigate to HomeScreen upon successful verification
+        navigation.navigate('Home');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Invalid OTP');
+    }
+  };
 
   const LandingPage = () => {
     navigation.navigate('Landingpage');
@@ -300,7 +303,7 @@ const handleVerifyOTP = async (otp) => {
         <Ionicons name='arrow-back-outline' size={30} onPress={LandingPage} />
       </View>
       <Text style={styles.head}>HC TECHI</Text>
-
+      
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -316,29 +319,34 @@ const handleVerifyOTP = async (otp) => {
         value={password}
         secureTextEntry
       />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Phone Number"
-        keyboardType="phone-pad"
-        value={phoneNumber}
-        onChangeText={setPhoneNumber}
-      />
-      <Button title="Send OTP" onPress={handleSendOTP} />
-      <TextInput
-        style={styles.input}
-        placeholder="OTP"
-        keyboardType="numeric"
-        value={otp}
-        onChangeText={setOtp}
-      />
-      <Button title="Verify OTP" onPress={handleVerifyOTP} style={{marginBottom:20}} />
-
       <TouchableOpacity style={styles.button} onPress={HomeScreen}>
         <Text style={styles.buttonText}>LOGIN</Text>
       </TouchableOpacity>
 
       <Text style={styles.pass}>Forgot password !!!</Text>
+
+      <Text style={{fontSize:15,marginBottom:10}}>Login using OTP</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Phone Number"
+        placeholderTextColor={'#fff'}
+        keyboardType="phone-pad"
+        value={phoneNumber}
+        onChangeText={setPhoneNumber}
+      />
+      <TouchableOpacity onPress={handleSendOTP} style={styles.button}  ><Text style={styles.buttonText}>SEND OTP</Text></TouchableOpacity>
+      <TextInput
+        style={styles.input}
+        placeholder="OTP"
+        placeholderTextColor={'#fff'}
+        keyboardType="numeric"
+        value={otp}
+        onChangeText={setOtp}
+      />
+      <TouchableOpacity  onPress={handleVerifyOTP} style={styles.button} ><Text style={styles.buttonText}>Verify OTP</Text></TouchableOpacity>
+
+      
 
       <View style={{ flexDirection: 'column', justifyContent: 'center', width: 165 }} >
         <FontAwsome.Button name='apple' backgroundColor='#47624f' color='#fff' borderRadius={25} >

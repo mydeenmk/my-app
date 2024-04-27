@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Text, TouchableOpacity, Image, ScrollView, fontWeight } from 'react-native';
+import { View, TextInput, StyleSheet, Text, TouchableOpacity, Image, ScrollView, fontWeight,Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Button } from "@react-native-material/core";
 import LinearGradient from 'react-native-linear-gradient';
@@ -9,15 +9,37 @@ import FontAwsome from '@expo/vector-icons/FontAwesome';
 import Login from './Login';
 import { SliderBox } from 'react-native-image-slider-box';
 
-import { FlatList } from 'react-native';
+
 
 const HomeScreen = ({ navigation }) => {
+  const [modalVisible, setModalVisible] = useState(false);
   const goToCart = () => {
     navigation.navigate('Cart');
   };
 
-  const goToLogin = () => {
-    navigation.navigate('Login');
+  
+  const handleOptionSelect = (option) => {
+    
+    console.log('Selected option:', option);
+    if (option === 'Sign out') {
+      // Log out and navigate back to the login screen
+      navigation.navigate('Login');
+    }
+    setModalVisible(false); // Close the popup
+  };
+
+  const renderOptions = () => {
+    return (
+      <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
+        <TouchableOpacity  onPress={() => handleOptionSelect('Sign out')}>
+          <Text>sign out</Text>
+        </TouchableOpacity>
+        {/* <TouchableOpacity onPress={() => console.log('Option 2')}>
+          <Text>Option 2</Text>
+        </TouchableOpacity> */}
+        {/* Add more options as needed */}
+      </View>
+    );
   };
 
   const image = [
@@ -27,6 +49,8 @@ const HomeScreen = ({ navigation }) => {
     require('../assets/4.jpg'),
   ]
 
+  
+
 
   return (
     
@@ -34,7 +58,7 @@ const HomeScreen = ({ navigation }) => {
         
       <View style={styles.container}>
         <View style={{ position: 'absolute',  left: 10, marginTop:48  }}>
-          <Ionicons name='arrow-back-outline' size={30}  onPress={goToLogin} />
+          <Ionicons name='arrow-back-outline' size={30}  />
         </View>
         <View style={styles.header}>
 
@@ -48,8 +72,24 @@ const HomeScreen = ({ navigation }) => {
           <Ionicons name='cart' size={30}  onPress={goToCart} />
           </View>
           <View style={{ position: 'absolute',  right: 1, marginTop:48  }}>
-          <Ionicons name='ellipsis-vertical' size={30}   />
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Ionicons name='ellipsis-vertical' size={30} />
+          </TouchableOpacity>
           </View>
+
+          <Modal
+        animationType='slide'
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+         <TouchableOpacity
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+          onPress={() => setModalVisible(false)}
+        >
+          {renderOptions()}
+        </TouchableOpacity>
+      </Modal>
 
         <View style={{ marginTop:50 }}>
           <SliderBox images={image} dotcolor="red" inactiveDotColor="black"
