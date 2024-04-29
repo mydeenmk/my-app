@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "101582001873",
+    "project_id": "hc-testing-419204",
+    "storage_bucket": "hc-testing-419204.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101582001873:android:f597a0fdd850d69560d7f0",
+        "android_client_info": {
+          "package_name": "com.mohammed_mydeen.myapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101582001873-3cdlfcp15b2nc8j7ggn57qgahvo5f4b7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mohammed_mydeen.myapp",
+            "certificate_hash": "27124516d5b17a9ae6a9c0fed023b1ee5bbbbab3"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkRhHZw94baRdAHbdeUXsq9SsW1IV-sXc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
