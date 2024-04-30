@@ -108,8 +108,8 @@ import * as Google from 'expo-auth-session/providers/google';
 import { GoogleSignin,statusCodes } from 'react-native-google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useEffect } from 'react';
+// import {GoogleAuthProvider} from '@firebase/auth'
 import {GoogleAuthProvider} from '@firebase/auth'
-
 const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otp, setOtp] = useState('');
@@ -138,7 +138,7 @@ const Login = () => {
   // };
   GoogleSignin.configure({
     
-    ClientId: '101582001873-ck1ksio14k72927ktfu82sgc0f1aii2j.apps.googleusercontent.com' 
+    ClientId: '101582001873-3cdlfcp15b2nc8j7ggn57qgahvo5f4b7.apps.googleusercontent.com' 
   });
    const signIn = async () => {
     try {
@@ -146,6 +146,7 @@ const Login = () => {
       const {idToken} = await GoogleSignin.signIn();
       const googleCredentials=GoogleAuthProvider.credential(idToken)
       await signInwithcredentials( auth, googleCredentials);
+      navigation.navigate('Home');
 
     } catch (error) {
       console.log('got error:', error.message)
